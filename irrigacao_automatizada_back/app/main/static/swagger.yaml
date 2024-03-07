@@ -1,0 +1,581 @@
+openapi: 3.0.0
+info:
+  title: Swagger Sistema Automatizado
+  description: Sistema automatizado para irrigação de plantas domésticas utilizando Raspberry Pi3.
+  version: 1.0.0
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: API Support
+    email: elayne.natalia@ifba.edu.br
+    url: https://github.com/elayneargollo/tcc-back
+
+servers:
+  - url: /
+
+paths:
+
+  /login:
+    post:
+      summary: Realizar login no sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioLogin' 
+      tags:
+        - Autenticação
+      responses: 
+        '200':
+          description: Login no sistema
+
+  /cadastro:
+    post:
+      summary: Realizar cadastro no sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cadastro' 
+      tags:
+        - Usuário
+      responses: 
+        '200':
+          description: Cadastrar-se no sistema
+  
+  /confirmacao/{usuario_id}:
+    get:
+      summary: Confirma a identidade do usuário cadastrado
+      tags:
+        - Usuário
+      parameters:
+        - name: usuario_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID do usuário especificado é inválido (não é um número).
+        '404':
+          description: Usuário com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.
+
+
+  /logout:
+    post:
+      summary: Realizar logout no sistema
+      requestBody:
+        required: false
+      tags:
+        - Usuário
+      responses: 
+        '200':
+          description: Sair do sistema
+
+  /plantas/:
+    post:
+      summary: Criar uma planta
+      tags:
+        - Planta
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Planta' 
+      responses: 
+        '201':
+          description: Criar
+
+    get:
+      summary: Retorna todas as plantas cadastradas no sistema.
+      description: Visualizar plantas.
+      tags:
+        - Planta
+      security:
+        - bearerAuth : []
+
+      responses:
+        '200':    # status code
+          description: Uma matriz JSON de plantas
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Planta' 
+        '403': 
+          description: 'Você não tem as permissões necessárias para o recurso.'
+        '401': 
+          description: 'Não autorizado'
+
+  /plantas/{planta_id}:
+    get:
+      summary: Retorna uma planta por Id
+      tags:
+        - Planta
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: planta_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de planta especificado é inválido (não é um número).
+        '404':
+          description: Uma planta com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.
+    put:
+      summary: Alterar uma plata
+      tags:
+        - Planta
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: planta_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : string
+      requestBody:
+        required: true
+        content:
+          application/json:     
+            schema:
+              $ref: '#/components/schemas/Planta' 
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de planta especificado é inválido (não é um número).
+        '404':
+          description: Uma planta com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.
+
+  /solos/{solo_id}:
+    get:
+      summary: Retorna um solo por Id
+      tags:
+        - Solo
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: solo_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de solo especificado é inválido (não é um número).
+        '404':
+          description: Uma solo com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.
+
+  /solos/:
+    get:
+      summary: Retorna todos os solos cadastradas no sistema.
+      description: Visualizar solos.
+      tags:
+        - Solo
+      security:
+        - bearerAuth : []
+      responses:
+        '200':    # status code
+          description: Uma matriz JSON de solo
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Solo' 
+        '403': 
+          description: 'Você não tem as permissões necessárias para o recurso.'
+        '401': 
+          description: 'Não autorizado'
+
+  /portes/{porte_id}:
+    get:
+      summary: Retorna um porte por Id
+      tags:
+        - Porte
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: porte_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de porte especificado é inválido (não é um número).
+        '404':
+          description: Um porte com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.
+
+  /portes/:
+    get:
+      summary: Retorna todos os portes cadastradas no sistema.
+      description: Visualizar portes.
+      tags:
+        - Porte
+      security:
+        - bearerAuth : []
+      responses:
+        '200':    # status code
+          description: Uma matriz JSON de porte
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Porte' 
+        '403': 
+          description: 'Você não tem as permissões necessárias para o recurso.'
+        '401': 
+          description: 'Não autorizado'
+
+  /ambientes/{ambiente_id}:
+    get:
+      summary: Retorna um ambiente por Id
+      tags:
+        - Ambiente
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: ambiente_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de ambiente especificado é inválido (não é um número).
+        '404':
+          description: Um ambiente com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.
+
+  /ambientes/:
+    get:
+      summary: Retorna todos os ambientes cadastradas no sistema.
+      description: Visualizar ambientes.
+      tags:
+        - Ambiente
+      security:
+        - bearerAuth : []
+      responses:
+        '200':    # status code
+          description: Uma matriz JSON de porte
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Ambiente' 
+        '403': 
+          description: 'Você não tem as permissões necessárias para o recurso.'
+        '401': 
+          description: 'Não autorizado'
+
+  /sensores/:
+    post:
+      summary: Criar um sensor
+      tags:
+        - Sensor
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor' 
+      responses: 
+        '201':
+          description: Criar
+
+    get:
+      summary: Retorna todos os sensores cadastradas no sistema.
+      description: Visualizar sensores.
+      tags:
+        - Sensor
+      security:
+        - bearerAuth : []
+      responses:
+        '200':    # status code
+          description: Uma matriz JSON de porte
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Sensor' 
+        '403': 
+          description: 'Você não tem as permissões necessárias para o recurso.'
+        '401': 
+          description: 'Não autorizado'
+
+  /sensores/{sensor_id}:
+    get:
+      summary: Retorna um sensor por Id
+      tags:
+        - Sensor
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: sensor_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de sensor especificado é inválido (não é um número).
+        '404':
+          description: Um sensor com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.       
+
+  /solenoides/{solenoide_id}:
+    get:
+      summary: Retorna um solenoide por Id
+      tags:
+        - Solenoide
+      security:
+        - bearerAuth : []
+      parameters:
+        - name: solenoide_id
+          in: path
+          required: true
+          description: ""
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+        '400':
+          description: O ID de solenoide especificado é inválido (não é um número).
+        '404':
+          description: Um solenoide com o ID especificado não foi encontrada.
+        default:
+          description: Erro inesperado.   
+
+  /solenoides/:
+    post:
+      summary: Criar uma solenóide
+      tags:
+        - Solenoide
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Solenoide' 
+      responses: 
+        '201':
+          description: Criar
+
+    get:
+      summary: Retorna todos os solenoide cadastradas no sistema.
+      description: Visualizar solenoides.
+      tags:
+        - Solenoide
+      security:
+        - bearerAuth : []
+      responses:
+        '200':    # status code
+          description: Uma matriz JSON de porte
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Solenoide' 
+        '403': 
+          description: 'Você não tem as permissões necessárias para o recurso.'
+        '401': 
+          description: 'Não autorizado'  
+
+components:
+  schemas:
+    cadastro:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Elayne
+        sobrenome:
+          type: string
+          example: Natália
+        email:
+          type: string
+          example: elayne.natalia@outlook.com
+        password:
+          type: string
+          example: elayneargollo
+
+    Planta:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Girassol
+        fruto:
+          type: string
+          example: Nao
+        planta_id:
+          type: integer
+          example: 1
+        ambienteId:
+          type: integer
+          example: 1
+        tipoSoloId:
+          type: integer
+          example: 1
+        porteId:
+          type: integer
+          example: 1
+
+    Solo:
+      type: object
+      properties:
+        soloId:
+          type: integer
+          example: 1
+        tipoSolo:
+          type: string
+          example: Arenoso
+        identificador:
+          type: string
+          example: ARENOSO
+        pesoSoloSeco:
+          type: float
+          example: 4.23
+        pesoSoloUmido:
+          type: float
+          example: 4.59
+        quantidadeAmostra:
+          type: integer
+          example: 1000
+        concentracaoMinima:
+          type: float
+          example: 31
+
+    Sensor:
+      type: object
+      properties:
+        solenoideId:
+          type: integer
+          example: 1
+        plantaId:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: Sensor 1
+        tag:
+          type: string
+          example: Tag_sensor
+        status:
+          type: string
+          example: ABERTO
+        valorCalibracaoMinimo:
+          type: float
+          example: 3458
+        valorCalibracaoMaximo:
+          type: float
+          example: 8506
+        voltagem:
+          type: integer
+          example: 3
+
+    Solenoide:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Fechado
+        tag:
+          type: string
+          example: Tag_solenoide
+        corpo:
+          type: string
+          example: BRONZE
+        quantidadeVias:
+          type: integer
+          example: 2
+        voltagem:
+          type: integer
+          example: 110
+
+    Ambiente:
+      type: object
+      properties:
+        ambienteId:
+          type: integer  
+          example: 1
+        tipoAmbiente:
+          type: string
+          example: Interno
+        identificador:
+          type: string
+          example: INTERNO
+
+    Porte:
+      type: object
+      properties:
+        porteId:
+          type: integer  
+          example: 1
+        descricao:
+          type: string
+          example: Pequeno
+        identificador:
+          type: string
+          example: PEQUENO
+
+    UsuarioLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          example: elayne.natalia@outlook.com
+        password:
+          type: string
+          example: elayne
+
+  securitySchemes:
+    basic:
+      type: http,
+      scheme: basic
+    bearerAuth:
+      type: http
+      description: Autorização JWT
+      scheme: bearer
+      bearerFormat: JWT
+      in: header
+security:
+  - bearerAuth: []

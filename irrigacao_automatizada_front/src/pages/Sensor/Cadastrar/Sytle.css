@@ -1,0 +1,51 @@
+.conteudo {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding-right: 15px;
+    border: 1px;
+    border-radius: 20px;
+    margin-top: 100px;
+    background: #DCDCDC;
+    font-size: 1em;
+    margin-right: 15px;
+    padding-left: 10px
+}
+
+.texto
+{
+    width: 100%;
+    height: 25vh;
+    justify-content: right;
+    align-items: right;
+}
+
+/* pc, note */
+@media screen and (min-width: 900px) {
+	.conteudo {
+        margin-top: 100px;
+	}
+}
+
+/* tablet */
+@media screen and (min-width: 600px) and (max-width: 900px) {
+	.conteudo 
+    {
+		/*background: #9CF;*/
+	}
+}
+
+/* celular */
+@media screen and (max-device-width: 599px) {
+	.conteudo {
+        padding-left: 20px;
+	}
+}
+
+h1{
+    color: #474A51;
+}
+
+.MuiButton-textSizeSmall {
+    font-size: 20px;
+  }

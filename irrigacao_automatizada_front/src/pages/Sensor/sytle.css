@@ -1,0 +1,19 @@
+.MuiCardActions-root
+{
+    padding-top: 30px !important;
+    margin-left: 10px;
+}
+
+.css-1jbbcbn-MuiDataGrid-columnHeaderTitle
+{
+    font-size: 15px;
+}
+
+.css-17z57jz-MuiDataGrid-root .MuiDataGrid-cell--textLeft
+{
+    font-size: 15px;
+}
+
+.MuiButton-textSizeSmall {
+    font-size: 20px;
+  }
